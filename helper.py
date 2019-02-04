@@ -142,14 +142,6 @@ def exports_imports_plot(Trades_Total, fuel_type):
     plt.close()
 
 def genDegreeMatrix4Year(dataFrame, map2Row, year):
-    """
-    This is a helper function that takes a dataFrame, extracts a certain year's
-    information and maps the in_degree and out degree of each country.
-
-    The output is a Data Frame of length associated to the map2Row dictionary and has two columns:
-        The first one is "InDegree"
-        The second one is "OutDegree"
-    """
     energyYear = dataFrame[dataFrame.Year == year]
     energyYear_weight = energyYear.groupby(['Exporter ISO3','Importer ISO3' ])['Weight (1000kg)'].sum().reset_index()
 
@@ -283,9 +275,6 @@ def connectivity_plot(gasDegree, oilDegree, coalDegree, totalDegree):
 
 
 def genGraph4Year(dataFrame, year):
-    """
-    This is a helper function that takes a dataFrame, creates a graph for a certain year.
-    """
     energyYear = dataFrame[dataFrame.Year == year]
     energyYear_weight = energyYear.groupby(['Exporter ISO3','Importer ISO3' ])['Weight (1000kg)'].sum().reset_index()
     energyYear_Value = energyYear.groupby(['Exporter ISO3','Importer ISO3' ])['Value (1000USD)'].sum().reset_index()
@@ -324,37 +313,6 @@ def hub_matrix(G, nodelist=None, weight = 'weight'):
 
 
 def hits_numpy(G, weight='weight', normalized=True):
-    """
-    Returns
-    -------
-    (hubs,authorities) : two-tuple of dictionaries
-       Two dictionaries keyed by node containing the hub and authority
-       values.
-
-    Examples
-    --------
-    >>> G=nx.path_graph(4)
-    >>> h,a=nx.hits(G)
-
-    Notes
-    -----
-    The eigenvector calculation uses NumPy's interface to LAPACK.
-
-    The HITS algorithm was designed for directed graphs but this
-    algorithm does not check if the input graph is directed and will
-    execute on undirected graphs.
-
-    References
-    ----------
-    .. [1] A. Langville and C. Meyer,
-       "A survey of eigenvector methods of web information retrieval."
-       http://citeseer.ist.psu.edu/713792.html
-    .. [2] Jon Kleinberg,
-       Authoritative sources in a hyperlinked environment
-       Journal of the ACM 46 (5): 604-32, 1999.
-       doi:10.1145/324133.324140.
-       http://www.cs.cornell.edu/home/kleinber/auth.pdf.
-    """
     if len(G) == 0:
         return {}, {}
     H = hub_matrix(G, list(G), weight = weight)
