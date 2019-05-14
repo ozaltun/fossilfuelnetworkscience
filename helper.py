@@ -6,8 +6,6 @@ import collections
 import powerlaw
 import community
 import operator
-import SR as sr
-
 
 def get_raw_data():
     # This is the function used to get all the raw data
