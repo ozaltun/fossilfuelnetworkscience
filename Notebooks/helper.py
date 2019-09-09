@@ -208,7 +208,7 @@ def power_compared2_expo(dataAll):
         final.append((i, R, p))
     return final
 
-def plotting_power_compared2_expontial(gasDegree, oilDegree, coalDegree, totalDegree):
+def plotting_power_compared2_expontial(gasDegree, oilDegree, coalDegree, totalDegree, save=False):
     dictionary  = {}
 
     gasPL = power_compared2_expo(gasDegree)
@@ -241,6 +241,9 @@ def plotting_power_compared2_expontial(gasDegree, oilDegree, coalDegree, totalDe
         axes[i,1].set_title('Probability ratio of {}'.format(fuel))
         axes[i,1].set_ylabel('Probability')
         axes[i,1].set_ylim([0,1])
+
+    if save == True:
+        plt.savefig('figures/power_compared2_exponential.eps', format='eps')
 
 
     plt.show()
