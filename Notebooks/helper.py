@@ -229,7 +229,7 @@ def plotting_power_compared2_expontial(gasDegree, oilDegree, coalDegree, totalDe
 
     #plt.subplot(1, 1, 1)
     fig, axes = plt.subplots(4, 2, figsize=(8,16))
-    fig.suptitle('Plots of loglikelihood ratio between power law and exponential distributions', fontsize=16)
+    fig.suptitle('Plots of loglikelihood ratio between power law and exponential distributions', fontsize=11)
 
     for i, fuel in enumerate(['gas', 'oil', 'coal','total']):
         axes[i,0].scatter(year, dictionary[fuel][0])
