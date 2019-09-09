@@ -209,32 +209,42 @@ def power_compared2_expo(dataAll):
     return final
 
 def plotting_power_compared2_expontial(gasDegree, oilDegree, coalDegree, totalDegree):
+    dictionary  = {}
+
     gasPL = power_compared2_expo(gasDegree)
     year, Rgas, pgas = zip(*gasPL)
+    dictionary['gas'] = [Rgas, pgas]
 
     oilPL = power_compared2_expo(oilDegree)
     year, Roil, poil = zip(*oilPL)
+    dictionary['oil'] = [Roil, poil]
 
     coalPL = power_compared2_expo(coalDegree)
     year, Rcoal, pcoal = zip(*coalPL)
+    dictionary['coal'] = [Rcoal, pcoal]
 
     totalPL = power_compared2_expo(totalDegree)
     year, Rtotal, ptotal = zip(*totalPL)
+    dictionary['total'] = [Rtotal, ptotal]
 
     #plt.subplot(1, 1, 1)
-    plt.scatter(year, Rcoal, label = 'Coal')
-    plt.scatter(year, Rgas, label = 'Gas')
-    plt.scatter(year, Roil, label = 'Oil')
-    plt.scatter(year, Rtotal, label = 'Combined Fossil Fuel')
-    plt.legend()
-    plt.xlabel('Year')
-    plt.ylabel('Loglikelihood ratio')
-    plt.axhline(y=0)
-    plt.title('Loglikelihood ratio between Power Law and Exponential')
+    fig, axes = plt.subplots(4, 2, figsize=(8,16))
+    fig.suptitle('Plots of loglikelihood ratio between power law and exponential distributions', fontsize=16)
+
+    for i, fuel in enumerate(['gas', 'oil', 'coal','total']):
+        axes[i,0].scatter(year, dictionary[fuel][0])
+        axes[i,0].set_title('Loglikelihood ratio of {}'.format(fuel))
+        axes[i,0].set_ylabel('Loglikelihood')
+        axes[i,0].axhline(y=0)
+
+        axes[i,1].scatter(year, dictionary[fuel][1])
+        axes[i,1].set_title('Probability ratio of {}'.format(fuel))
+        axes[i,1].set_ylabel('Probability')
+        axes[i,1].set_ylim([0,1])
+
 
     plt.show()
     plt.close()
-
 
 def inDoutDtotD(dataAll):
     final = list()
