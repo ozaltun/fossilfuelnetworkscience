@@ -99,7 +99,7 @@ def get_data():
     return trades_df2016, trades_df2011, trades_df2006, trades_df2001, trades_Total, gasTrades_Total, coalTrades_Total, oilTrades_Total
 
 
-def exports_imports_plot(Trades_Total, fuel_type):
+def exports_imports_plot(Trades_Total, fuel_type, country='USA'):
     tonsExportedW = list()
     tonsImportedW = list()
 
@@ -109,8 +109,8 @@ def exports_imports_plot(Trades_Total, fuel_type):
 
     for i in years:
         data = Trades_Total[Trades_Total['Year'] == i]
-        data3 = data[data['Importer ISO3'] == 'USA']
-        data2 = data[data['Exporter ISO3'] == 'USA']
+        data3 = data[data['Importer ISO3'] == country]
+        data2 = data[data['Exporter ISO3'] == country]
         sumDollarsI = np.sum(data3['Value (1000USD)'])/1e6
         sumDollars = np.sum(data2['Value (1000USD)'])/1e6
         tonsImportedV.append((i, sumDollarsI))
@@ -134,7 +134,7 @@ def exports_imports_plot(Trades_Total, fuel_type):
     plt.legend()
     plt.ylabel('Billions of $')
     plt.xlabel('Year')
-    plt.title('{} Exports/Imports'.format(fuel_type))
+    plt.title('{} {} Exports/Imports'.format(country, fuel_type))
 
     plt.show()
     plt.close()
