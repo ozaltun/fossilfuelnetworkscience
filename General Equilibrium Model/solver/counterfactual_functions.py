@@ -131,7 +131,7 @@ def get_C_g_hat(w_hat, r_hat, data):
     '''
 
     part1 = data['phi_R'] * (r_hat ** (1- data['rho_g'].reshape((1, data['g']))))
-    part2 = data['phi_L_g'] * (w_hat.reshape((data['n'], 1)) ** (1 - data['rho_g'].reshape((1, data['g']))))
+    part2 = data['phi_L_g'] * (w_hat.reshape((data['n'], 1)) ** (1 - data['rho_g'].reshape((1, data['g']))) )
 
     C_g_hat = (part1 + part2) ** (1/(1-data['rho_g'].reshape((1, data['g'])) ))
 
@@ -189,3 +189,42 @@ def counterfactual(X, data):
     X_new = get_X_from_values(values, data)
 
     return X_new
+
+def reduced_counterfactual(X, data):
+
+    n = data['n']
+    g = data['g']
+    k = data['k']
+
+    r_hat, w_hat = get_values_from_X_reduced(X, data)
+
+
+    C_g_hat = get_C_g_hat(w_hat, r_hat, data)
+    E_hat = get_E_hat(w_hat, r_hat, data)
+
+    P_g_goods_hat = get_P_g_goods_hat(C_g_hat, data)
+
+    C_k_hat = get_C_k_hat(w_hat, P_g_goods_hat, data)
+
+    P_k_goods_hat = get_P_k_goods_hat(C_k_hat, data)
+
+    P_k_hat = get_P_k_hat(P_k_goods_hat, data)
+
+    D_k_hat = get_D_k_hat(E_hat, P_k_goods_hat, P_k_hat, data)
+    print(np.mean(D_k_hat))
+    Y_k_hat = get_Y_k_hat(C_k_hat, P_k_hat, D_k_hat, data)
+    print(np.mean(Y_k_hat))
+    D_g_hat = get_D_g_hat(P_g_goods_hat, C_k_hat, Y_k_hat, data)
+    print(np.mean(D_g_hat))
+    Y_g_hat = get_Y_g_hat(C_g_hat, P_g_goods_hat, D_g_hat, data)
+    print(np.mean(Y_g_hat))
+    values = []
+    values.append(r_hat - get_r_hat(Y_g_hat, C_g_hat, data))
+    values.append(w_hat - get_w_hat(w_hat, Y_g_hat, Y_k_hat, C_k_hat, C_g_hat, data))
+
+
+    output = get_X_from_values_reduced(values, data)
+    print(output.shape)
+    print(np.mean(output))
+
+    return output

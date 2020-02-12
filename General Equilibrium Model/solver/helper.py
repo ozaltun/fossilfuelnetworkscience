@@ -134,3 +134,33 @@ def get_X_from_values(values, data):
         start = end
 
     return X
+
+def get_values_from_X_reduced(X, data):
+    n = data['n']
+    g = data['g']
+    k = data['k']
+
+    start = 0
+    r_hat =  X[start:(start+n*g)].reshape((n, g))
+    start += n*g
+    w_hat = X[start:(start+n)].reshape((n, 1))
+    end = start + n
+
+    return r_hat, w_hat
+
+def get_X_from_values_reduced(values, data):
+    n = data['n']
+    g = data['g']
+    k = data['k']
+
+    X = np.zeros(n*g + n)
+
+    start = 0
+    end = 0
+    for i in values:
+        temp = np.ravel(i)
+        end += temp.shape[0]
+        X[start:end] = temp
+        start = end
+
+    return X
