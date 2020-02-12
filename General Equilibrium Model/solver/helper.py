@@ -154,7 +154,10 @@ def get_X_from_values_reduced(values, data):
     k = data['k']
 
     X = np.zeros(n*g + n)
+    assert values[0].shape == (n, g)
+    assert values[1].shape == (n, 1)
 
+    
     start = 0
     end = 0
     for i in values:

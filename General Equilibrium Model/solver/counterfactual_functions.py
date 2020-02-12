@@ -9,7 +9,7 @@ def get_E_hat(w_hat, r_hat, data):
     parameters: data['e_L'], data['e']
     output: E_hat (nx1)
     '''
-    E_hat = w_hat*data['e_L'] + (r_hat * data['e']) @ np.ones((data['g'], 1))
+    E_hat = w_hat*data['e_L'] + (r_hat * data['e']).sum(axis=1).reshape((data['n'], 1))
     return E_hat
 
 def get_P_k_hat(P_k_goods_hat, data):
@@ -19,7 +19,7 @@ def get_P_k_hat(P_k_goods_hat, data):
     output: P_k_hat (nx1)
     '''
     new_matrix = data['alpha'] * (P_k_goods_hat)**(1-data['sigma'])
-    P_k_hat = (new_matrix @ np.ones((data['k'], 1)) )**(1/(1-data['sigma']))
+    P_k_hat = (new_matrix.sum(axis=1))**(1/(1-data['sigma']))
 
     return P_k_hat
 
@@ -30,7 +30,6 @@ def get_P_k_goods_hat(C_k_hat, data):
     output: P_k_goods_hat (nxk)
     '''
 
-    P_k_goods_hat = np.zeros((data['n'], data['k']))
     C_k_hat_temp = C_k_hat ** (-data['theta_k'].reshape((1, data['k'])))
     part1 = np.sum(data['lambda_k'] * C_k_hat_temp.reshape((1, data['n'], data['k'])), axis=1)
     part2 = part1.reshape((data['n'], data['k']))
@@ -45,7 +44,6 @@ def get_P_g_goods_hat(C_g_hat, data):
     output: P_g_goods_hat (nxg)
     '''
 
-    P_g_goods_hat = np.zeros((data['n'], data['g']))
     C_g_hat_temp = C_g_hat ** (-data['theta_g'].reshape((1, data['g'])))
     part1 = np.sum(data['lambda_g'] * C_g_hat_temp.reshape((1, data['n'], data['g'])), axis=1)
     part2 = part1.reshape((data['n'], data['g']))
@@ -59,7 +57,7 @@ def get_D_k_hat(E_hat, P_k_goods_hat, P_k_hat, data):
     parameters: data['sigma']
     output: D_k_hat (nxk)'''
 
-    D_k_hat = E_hat * (P_k_goods_hat/P_k_hat) ** (1 - data['sigma'])
+    D_k_hat = E_hat.reshape((data['n'], 1)) * ((P_k_goods_hat/P_k_hat.reshape((data['n'], 1))) ** (1 - data['sigma']))
 
     return D_k_hat
 
@@ -72,26 +70,25 @@ def get_D_g_hat(P_g_goods_hat, C_k_hat, Y_k_hat, data):
     TODO: Problem with reshape
 
     '''
-    C_k_hat_temp = C_k_hat **(data['eta'].reshape(1, data['k']) - 1)
+    part1 = (P_g_goods_hat.reshape((data['n'], 1, data['g']))/C_k_hat.reshape((data['n'], data['k'], 1)) ) ** (1 - data['eta'].reshape(1, data['k'], 1))
+    part2 = data['d'] * part1 * Y_k_hat.reshape((data['n'], data['k'], 1))
 
-    part_1 = data['d'] * ( C_k_hat_temp * Y_k_hat ).reshape((data['n'], data['k'], 1))
-    part_2 = P_g_goods_hat.reshape((data['n'], 1, data['g'])) **(1 - data['eta'].reshape((1, data['k'], 1)))
-    D_g_hat = np.sum(part_1*part_2, axis=1).reshape((data['n'], data['g']))
+    D_g_hat = part2.sum(axis=1).reshape((data['n'], data['g']))
 
     return D_g_hat
 
-def get_Y_k_hat(C_k_hat, P_k_hat, D_k_hat, data):
+def get_Y_k_hat(C_k_hat, P_k_goods_hat, D_k_hat, data):
     ''' This is a function that returns the total production for a given final good and country.
     variables: C_k_hat, P_k_hat, D_k_hat
     parameters: data['X_k'], data['Y_k'], data['theta_k']
     output: Y_k_hat (nxk)'''
 
     C_k_hat_temp = C_k_hat **(-data['theta_k'].reshape((1, data['k'])))
-    P_k_hat_temp = P_k_hat **(data['theta_k'].reshape((1, data['k'])))
+    P_k_goods_hat_temp = P_k_goods_hat **(data['theta_k'].reshape((1, data['k'])))
 
-    part_1 = data['X_k'] * (P_k_hat_temp * D_k_hat).reshape((data['n'],1,data['k']))
+    part_1 = data['X_k']/data['Y_k'].reshape((1, data['n'], data['k'])) * (P_k_goods_hat_temp * D_k_hat).reshape((data['n'],1,data['k']))
 
-    Y_k_hat = C_k_hat_temp/data['Y_k'] * np.sum(part_1, axis=1).reshape(data['n'], data['k'])
+    Y_k_hat = (C_k_hat_temp.reshape((1, data['n'], data['k']))*part_1).sum(axis=0).reshape(data['n'], data['k'])
 
     return Y_k_hat
 
@@ -104,9 +101,9 @@ def get_Y_g_hat(C_g_hat, P_g_goods_hat, D_g_hat, data):
     C_g_hat_temp = C_g_hat **(-data['theta_g'].reshape((1, data['g'])))
     P_g_goods_hat_temp = P_g_goods_hat **(data['theta_g'].reshape((1, data['g'])))
 
-    part_1 = data['X_g'] * (P_g_goods_hat_temp * D_g_hat).reshape((data['n'],1,data['g']))
+    part_1 = data['X_g']/data['Y_g'].reshape((1, data['n'], data['g'])) * (P_g_goods_hat_temp * D_g_hat).reshape((data['n'],1,data['g']))
 
-    Y_g_hat = C_g_hat_temp/data['Y_g'] * np.sum(part_1, axis=1).reshape(data['n'], data['g'])
+    Y_g_hat = (C_g_hat_temp.reshape((1, data['n'], data['g']))*part_1).sum(axis=0).reshape(data['n'], data['g'])
 
     return Y_g_hat
 
@@ -131,36 +128,34 @@ def get_C_g_hat(w_hat, r_hat, data):
     '''
 
     part1 = data['phi_R'] * (r_hat ** (1- data['rho_g'].reshape((1, data['g']))))
-    # print('part1', part1[part1 == 0])
     part2 = data['phi_L_g'] * (w_hat.reshape((data['n'], 1)) ** (1 - data['rho_g'].reshape((1, data['g']))) )
-    # print('part2', part2[part2 == 0])
+
     C_g_hat = (part1 + part2) ** (1/(1-data['rho_g'].reshape((1, data['g'])) ))
 
     return C_g_hat
 
-def get_r_hat(Y_g_hat, C_g_hat, data):
+def get_r_hat(r_hat, Y_g_hat, C_g_hat, data):
     ''' This is a function that returns the ...
     variables: Y_g_hat, C_g_hat
     parameters: data['R_hat'], data['rho_g']
     output: r_hat (nxg)'''
 
-    part1 = (Y_g_hat/data['R_hat']) ** (1/data['rho_g'].reshape((1, data['g'])))
-    part2 = (C_g_hat) ** (1 - 1/data['rho_g'].reshape((1, data['g'])))
+    right_hand_side = ((r_hat/C_g_hat) ** ( 1- data['rho_g'].reshape((1, data['g'])))) * Y_g_hat
 
-    r_hat = part1*part2
-
-    return r_hat
+    return right_hand_side
 
 
 def get_w_hat(w_hat, Y_g_hat, Y_k_hat, C_k_hat, C_g_hat, data):
-    part1_part1 = data['phi_L_g']*data['Y_g']/(data['E']*data['e_L']).reshape((data['n'], 1)) * ((w_hat.reshape((data['n'], 1))/ \
-                    C_g_hat)**(1-data['rho_g'].reshape((1, data['g'])))) *Y_g_hat
-    part1 = part1_part1.sum(axis=1)
+    part1_part1 = data['phi_L_g']*data['Y_g']/(data['E']*data['e_L']).reshape((data['n'], 1))
+    part1_part2 = ((w_hat.reshape((data['n'], 1))/C_g_hat)**(1-data['rho_g'].reshape((1, data['g'])))) *Y_g_hat
 
-    part2_part1 = data['phi_L_k']*data['Y_k']/(data['E']*data['e_L']).reshape((data['n'], 1)) * ((w_hat.reshape((data['n'], 1))/ \
-                    C_k_hat)**(1-data['eta'].reshape((1, data['k'])))) *Y_k_hat
+    part1 = (part1_part1*part1_part2).sum(axis=1).reshape((data['n'], 1))
 
-    part2 = part2_part1.sum(axis=1)
+    part2_part1 = data['phi_L_k']*data['Y_k']/(data['E']*data['e_L']).reshape((data['n'], 1))
+
+    part2_part2 = ((w_hat.reshape((data['n'], 1))/C_k_hat)**(1-data['eta'].reshape((1, data['k'])))) *Y_k_hat
+
+    part2 = (part2_part1*part2_part2).sum(axis=1).reshape((data['n'], 1))
 
     w_hat_new = (part1 + part2).reshape((data['n'], 1))
     return w_hat_new
@@ -184,7 +179,7 @@ def counterfactual(X, data):
     values.append(Y_g_hat - get_Y_g_hat(C_g_hat, P_g_goods_hat, D_g_hat, data))
     values.append(C_k_hat - get_C_k_hat(w_hat, P_g_goods_hat, data))
     values.append(C_g_hat - get_C_g_hat(w_hat, r_hat, data))
-    values.append(r_hat - get_r_hat(Y_g_hat, C_g_hat, data))
+    values.append(r_hat - get_r_hat(r_hat, Y_g_hat, C_g_hat, data))
     values.append(w_hat - get_w_hat(w_hat, Y_g_hat, Y_k_hat, C_k_hat, C_g_hat, data))
 
     X_new = get_X_from_values(values, data)
@@ -213,19 +208,18 @@ def reduced_counterfactual(X, data):
 
     D_k_hat = get_D_k_hat(E_hat, P_k_goods_hat, P_k_hat, data)
 
-    Y_k_hat = get_Y_k_hat(C_k_hat, P_k_hat, D_k_hat, data)
+    Y_k_hat = get_Y_k_hat(C_k_hat, P_k_goods_hat, D_k_hat, data)
     # print(np.mean(Y_k_hat))
     D_g_hat = get_D_g_hat(P_g_goods_hat, C_k_hat, Y_k_hat, data)
     # print(np.mean(D_g_hat))
     Y_g_hat = get_Y_g_hat(C_g_hat, P_g_goods_hat, D_g_hat, data)
     # print(np.mean(Y_g_hat))
     values = []
-    values.append(r_hat - get_r_hat(Y_g_hat, C_g_hat, data))
+    values.append(r_hat - get_r_hat(r_hat, Y_g_hat, C_g_hat, data))
     values.append(w_hat - get_w_hat(w_hat, Y_g_hat, Y_k_hat, C_k_hat, C_g_hat, data))
 
-
     output = get_X_from_values_reduced(values, data)
-    print(output.shape)
-    print(np.mean(output))
+    # print(output.shape)
+    # print(np.mean(output))
 
     return output
