@@ -126,7 +126,7 @@ def get_C_g_hat(w_hat, r_hat, data):
     parameters: data['phi_L_g'], data['phi_R'], data['rho_g']
     output: C_G_hat (nxg)
     '''
-    print(r_hat[r_hat<0])
+    #print(r_hat[r_hat<0])
     part1 = data['phi_R'] * (r_hat ** (1- data['rho_g'].reshape((1, data['g']))))
     part2 = data['phi_L_g'] * (w_hat.reshape((data['n'], 1)) ** (1 - data['rho_g'].reshape((1, data['g']))) )
 
@@ -140,7 +140,7 @@ def get_r_hat(r_hat, Y_g_hat, C_g_hat, data):
     parameters: data['R_hat'], data['rho_g']
     output: r_hat (nxg)'''
 
-    right_hand_side = ((r_hat/C_g_hat) ** ( 1- data['rho_g'].reshape((1, data['g'])))) * Y_g_hat
+    right_hand_side = ((r_hat/C_g_hat) ** ( 1- data['rho_g'].reshape((1, data['g'])))) * Y_g_hat /data['R_hat']
 
     return right_hand_side
 
