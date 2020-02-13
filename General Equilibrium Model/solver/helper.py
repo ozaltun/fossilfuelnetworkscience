@@ -148,7 +148,7 @@ def get_values_from_X_reduced(X, data):
 
     return r_hat, w_hat
 
-def get_X_from_values_reduced(values, data):
+def get_Res_from_values_reduced(values, data):
     n = data['n']
     g = data['g']
     k = data['k']
@@ -157,7 +157,7 @@ def get_X_from_values_reduced(values, data):
     assert values[0].shape == (n, g)
     assert values[1].shape == (n, 1)
 
-    
+
     start = 0
     end = 0
     for i in values:

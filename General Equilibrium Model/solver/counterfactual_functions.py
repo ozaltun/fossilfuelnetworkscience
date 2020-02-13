@@ -126,7 +126,7 @@ def get_C_g_hat(w_hat, r_hat, data):
     parameters: data['phi_L_g'], data['phi_R'], data['rho_g']
     output: C_G_hat (nxg)
     '''
-
+    print(r_hat[r_hat<0])
     part1 = data['phi_R'] * (r_hat ** (1- data['rho_g'].reshape((1, data['g']))))
     part2 = data['phi_L_g'] * (w_hat.reshape((data['n'], 1)) ** (1 - data['rho_g'].reshape((1, data['g']))) )
 
@@ -193,7 +193,7 @@ def reduced_counterfactual(X, data):
     k = data['k']
 
     r_hat, w_hat = get_values_from_X_reduced(X, data)
-
+    # print(r_hat.mean())
 
     C_g_hat = get_C_g_hat(w_hat, r_hat, data)
     E_hat = get_E_hat(w_hat, r_hat, data)
@@ -217,8 +217,10 @@ def reduced_counterfactual(X, data):
     values = []
     values.append(r_hat - get_r_hat(r_hat, Y_g_hat, C_g_hat, data))
     values.append(w_hat - get_w_hat(w_hat, Y_g_hat, Y_k_hat, C_k_hat, C_g_hat, data))
+    # print(get_r_hat(r_hat, Y_g_hat, C_g_hat, data)[0:3,0:3])
 
-    output = get_X_from_values_reduced(values, data)
+
+    output = get_Res_from_values_reduced(values, data)
     # print(output.shape)
     # print(np.mean(output))
 
