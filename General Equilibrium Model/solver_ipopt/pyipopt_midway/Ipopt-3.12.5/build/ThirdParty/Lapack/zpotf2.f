@@ -1,1 +1,0 @@
-../../../ThirdParty/Lapack/LAPACK/SRC/zpotf2.f
