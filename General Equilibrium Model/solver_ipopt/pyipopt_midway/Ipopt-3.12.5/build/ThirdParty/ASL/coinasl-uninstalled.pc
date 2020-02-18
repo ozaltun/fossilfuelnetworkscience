@@ -1,0 +1,18 @@
+<<<<<<< HEAD
+prefix=/home/rccguest8452/GitHub/OSE2019/day1/SparseGridCode/pyipopt_midway/Ipopt-3.12.5/build
+libdir=/home/rccguest8452/GitHub/OSE2019/day1/SparseGridCode/pyipopt_midway/Ipopt-3.12.5/build/ThirdParty/ASL
+=======
+prefix=/Users/boraozaltun/Documents/GitHub/OSE2019/day1/SparseGridCode/pyipopt_midway/Ipopt-3.12.5/build
+libdir=/Users/boraozaltun/Documents/GitHub/OSE2019/day1/SparseGridCode/pyipopt_midway/Ipopt-3.12.5/build/ThirdParty/ASL
+>>>>>>> upstream/master
+
+Name: ASL
+Description: AMPL Solver Library
+URL: https://projects.coin-or.org/BuildTools
+Version: 1.2.15
+Libs: ${libdir}/libcoinasl.la -lm -ldl 
+<<<<<<< HEAD
+Cflags: -I/home/rccguest8452/GitHub/OSE2019/day1/SparseGridCode/pyipopt_midway/Ipopt-3.12.5/build/ThirdParty/ASL -I/home/rccguest8452/GitHub/OSE2019/day1/SparseGridCode/pyipopt_midway/Ipopt-3.12.5/ThirdParty/ASL/solvers
+=======
+Cflags: -I/Users/boraozaltun/Documents/GitHub/OSE2019/day1/SparseGridCode/pyipopt_midway/Ipopt-3.12.5/build/ThirdParty/ASL -I/Users/boraozaltun/Documents/GitHub/OSE2019/day1/SparseGridCode/pyipopt_midway/Ipopt-3.12.5/ThirdParty/ASL/solvers
+>>>>>>> upstream/master
