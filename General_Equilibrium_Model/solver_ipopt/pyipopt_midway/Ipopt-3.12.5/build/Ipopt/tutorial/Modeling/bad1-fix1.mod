@@ -1,0 +1,1 @@
+/Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/Ipopt/tutorial/Modeling/bad1-fix1.mod
