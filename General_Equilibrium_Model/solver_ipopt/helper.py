@@ -1,4 +1,4 @@
-import numpy as np
+import autograd.numpy as np
 import pandas as pd
 import pickle
 
@@ -153,17 +153,20 @@ def get_Res_from_values_reduced(values, data):
     g = data['g']
     k = data['k']
 
-    X = np.zeros(n*g + n)
+
     assert values[0].shape == (n, g)
     assert values[1].shape == (n, 1)
 
-
-    start = 0
-    end = 0
-    for i in values:
-        temp = np.ravel(i)
-        end += temp.shape[0]
-        X[start:end] = temp
-        start = end
+    X = np.concatenate((values[0].ravel(), values[1].ravel()), axis=0)
+    assert X.shape[0] == n*g + n
+    #
+    # start = 0
+    # end = 0
+    # for i in values:
+    #     temp = np.ravel(i)
+    #     end += temp.shape[0]
+    #     print(start, end, temp.shape)
+    #     X[start:end] = temp
+    #     start = end
 
     return X

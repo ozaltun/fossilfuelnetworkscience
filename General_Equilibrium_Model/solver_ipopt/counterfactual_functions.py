@@ -1,8 +1,7 @@
-import numpy as np
+import autograd.numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from helper import *
-from casadi import *
 ## These functions have had a basic "check".
 def get_E_hat(w_hat, r_hat, data):
     ''' This is a function that returns the total expenditure change for all countries as a vector E_hat.
@@ -10,7 +9,7 @@ def get_E_hat(w_hat, r_hat, data):
     parameters: data['e_L'], data['e']
     output: E_hat (nx1)
     '''
-    E_hat = w_hat*data['e_L'] + sum2(r_hat * data['e'])
+    E_hat = w_hat*data['e_L'] + (r_hat * data['e']).sum(axis=1).reshape((data['n'], 1))
     return E_hat
 
 def get_P_k_hat(P_k_goods_hat, data):
@@ -45,9 +44,7 @@ def get_P_g_goods_hat(C_g_hat, data):
     output: P_g_goods_hat (nxg)
     '''
 
-    exp1 = np.ones((data['n'], data['g'])) * (-data['theta_g'].reshape((1, data['g'])))
-    C_g_hat_temp = C_g_hat ** exp1
-    
+    C_g_hat_temp = C_g_hat ** (-data['theta_g'].reshape((1, data['g'])))
     part1 = np.sum(data['lambda_g'] * C_g_hat_temp.reshape((1, data['n'], data['g'])), axis=1)
     part2 = part1.reshape((data['n'], data['g']))
     P_g_goods_hat = part2 ** (-1/data['theta_g'].reshape((1, data['g'])))
@@ -130,11 +127,10 @@ def get_C_g_hat(w_hat, r_hat, data):
     output: C_G_hat (nxg)
     '''
     #print(r_hat[r_hat<0])
-    exp1 = np.ones((data['n'], data['g']))* (1- data['rho_g'].reshape((1, data['g'])))
-    part1 = data['phi_R'] * (r_hat ** exp1)
-    part2 = data['phi_L_g'] * (w_hat.reshape((data['n'], 1)) ** exp1 )
+    part1 = data['phi_R'] * (r_hat ** (1- data['rho_g'].reshape((1, data['g']))))
+    part2 = data['phi_L_g'] * (w_hat.reshape((data['n'], 1)) ** (1 - data['rho_g'].reshape((1, data['g']))) )
 
-    C_g_hat = (part1 + part2) ** (1/exp1)
+    C_g_hat = (part1 + part2) ** (1/(1-data['rho_g'].reshape((1, data['g'])) ))
 
     return C_g_hat
 
@@ -150,18 +146,19 @@ def get_r_hat(r_hat, Y_g_hat, C_g_hat, data):
 
 
 def get_w_hat(w_hat, Y_g_hat, Y_k_hat, C_k_hat, C_g_hat, data):
-    part1_part1 = data['phi_L_g']*data['Y_g']/(data['E']*data['e_L']).reshape((data['n'], 1))
+    part1_part1 = data['phi_L_g']*data['Y_g']/(data['E_L']).reshape((data['n'], 1))
     part1_part2 = ((w_hat.reshape((data['n'], 1))/C_g_hat)**(1-data['rho_g'].reshape((1, data['g'])))) *Y_g_hat
 
     part1 = (part1_part1*part1_part2).sum(axis=1).reshape((data['n'], 1))
 
-    part2_part1 = data['phi_L_k']*data['Y_k']/(data['E']*data['e_L']).reshape((data['n'], 1))
+    part2_part1 = data['phi_L_k']*data['Y_k']/(data['E_L']).reshape((data['n'], 1))
 
     part2_part2 = ((w_hat.reshape((data['n'], 1))/C_k_hat)**(1-data['eta'].reshape((1, data['k'])))) *Y_k_hat
 
     part2 = (part2_part1*part2_part2).sum(axis=1).reshape((data['n'], 1))
 
-    w_hat_new = (part1 + part2).reshape((data['n'], 1))
+    w_hat_new = ((part1 + part2))
+
     return w_hat_new
 
 
