@@ -9,7 +9,7 @@ def get_E_hat(w_hat, r_hat, data):
     parameters: data['e_L'], data['e']
     output: E_hat (nx1)
     '''
-    E_hat = w_hat*data['e_L'] + (r_hat * data['e']).sum(axis=1).reshape((data['n'], 1))
+    E_hat = w_hat*data['e_L'] + (r_hat * data['e'] *data['R_hat']).sum(axis=1).reshape((data['n'], 1))
     return E_hat
 
 def get_P_k_hat(P_k_goods_hat, data):
