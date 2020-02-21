@@ -35,32 +35,30 @@ def eval_jac_g(X, flag, user_data=None):
 
         return jacobian(eval_g)(X)
 
+root, data_dict, reg_2_num, comm_2_num = get_data_files()
+
+n = data_dict['n']
+g = data_dict['g']
+k = data_dict['k']
+
+data_dict['R_hat'] = np.ones((n, g))
+X_0 = np.ones(n*g + n)*1.0
+
+eval_g = lambda x: reduced_counterfactual(x, data_dict)
+eval_f = lambda x: np.linalg.norm(reduced_counterfactual(x, data_dict))
+
+nvar = X_0.shape[0]
+x_L = np.zeros((nvar))
+x_U = np.ones((nvar)) * 10000.0
+
+ncon = nvar
+
+g_L = np.zeros((nvar))*1.0
+g_U = np.zeros((nvar))*1.0
+
+eval_grad_f = grad(eval_f)
+
 def main():
-
-    root, data_dict, reg_2_num, comm_2_num = get_data_files()
-
-    n = data_dict['n']
-    g = data_dict['g']
-    k = data_dict['k']
-
-    data_dict['R_hat'] = np.ones((n, g))
-    X_0 = np.ones(n*g + n)*1.0
-
-    eval_g = lambda x: reduced_counterfactual(x, data_dict)
-    eval_f = lambda x: np.linalg.norm(reduced_counterfactual(x, data_dict))
-
-    nvar = X_0.shape[0]
-    x_L = np.zeros((nvar))
-    x_U = np.ones((nvar)) * 10000.0
-
-    ncon = nvar
-
-    g_L = np.zeros((nvar))*1.0
-    g_U = np.zeros((nvar))*1.0
-
-    eval_grad_f = grad(eval_f)
-
-
     nnzj = nvar*nvar
     nnzh =  int((nvar*(nvar+1))/2)
 
