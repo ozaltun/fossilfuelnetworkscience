@@ -24,11 +24,12 @@ def eval_jac_g(X, flag, user_data=None):
     @param flag: this asks for the sparsity structure
     """
     print('eval_jac_g')
-    print()
-    #XXX
+
     if flag:
-        rows = np.linspace(0, len(X) -1, len(X)).astype(int)
-        cols = np.linspace(0, len(X) -1, len(X)).astype(int)
+        temp = np.ones((X.shape[0], X.shape[0]))
+        rows, cols = np.nonzero(temp)
+        #rows = np.linspace(0, len(X) -1, len(X)).astype(int)
+        #cols = np.linspace(0, len(X) -1, len(X)).astype(int)
         return (rows, cols)
     else:
 
@@ -77,3 +78,5 @@ def main():
     print('status:', status)
 
     save_obj(x, root+'/x_output.pickle')
+
+main()
