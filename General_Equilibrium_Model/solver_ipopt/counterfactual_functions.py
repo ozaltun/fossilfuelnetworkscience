@@ -194,7 +194,6 @@ def reduced_counterfactual(X, data):
     k = data['k']
 
     r_hat, w_hat = get_values_from_X_reduced(X, data)
-    # print(r_hat.mean())
 
     C_g_hat = get_C_g_hat(w_hat, r_hat, data)
     E_hat = get_E_hat(w_hat, r_hat, data)
@@ -215,14 +214,23 @@ def reduced_counterfactual(X, data):
     # print(np.mean(D_g_hat))
     Y_g_hat = get_Y_g_hat(C_g_hat, P_g_goods_hat, D_g_hat, data)
     # print(np.mean(Y_g_hat))
-    values = []
-    values.append(r_hat - get_r_hat(r_hat, Y_g_hat, C_g_hat, data))
-    values.append(w_hat - get_w_hat(w_hat, Y_g_hat, Y_k_hat, C_k_hat, C_g_hat, data))
-    # print(get_r_hat(r_hat, Y_g_hat, C_g_hat, data)[0:3,0:3])
+
+    # Calculating the residual of equation representing r_hat
+    res_1 = r_hat - ((r_hat/C_g_hat) ** ( 1- data['rho_g'].reshape((1, data['g'])))) * Y_g_hat /data['R_hat']
+
+    # Calculating the residual of equation representing w_hat
+    part1_part1 = data['phi_L_g']*data['Y_g']/(data['E_L']).reshape((data['n'], 1))
+    part1_part2 = ((w_hat.reshape((data['n'], 1))/C_g_hat)**(1-data['rho_g'].reshape((1, data['g'])))) *Y_g_hat
+    part1 = (part1_part1*part1_part2).sum(axis=1).reshape((data['n'], 1))
+
+    part2_part1 = data['phi_L_k']*data['Y_k']/(data['E_L']).reshape((data['n'], 1))
+    part2_part2 = ((w_hat.reshape((data['n'], 1))/C_k_hat)**(1-data['eta'].reshape((1, data['k'])))) *Y_k_hat
+    part2 = (part2_part1*part2_part2).sum(axis=1).reshape((data['n'], 1))
+
+    res_2 = w_hat - ((part1 + part2))
+
+    # Create the final residual
+    res = np.concatenate((res_1.ravel(), res_2.ravel()), axis=0)
 
 
-    output = get_Res_from_values_reduced(values, data)
-    # print(output.shape)
-    # print(np.mean(output))
-
-    return output
+    return res
