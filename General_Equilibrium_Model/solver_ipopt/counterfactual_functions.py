@@ -84,7 +84,7 @@ def get_Y_k_hat(C_k_hat, P_k_goods_hat, D_k_hat, data):
     C_k_hat_temp = C_k_hat **(-data['theta_k'].reshape((1, data['k'])))
     P_k_goods_hat_temp = P_k_goods_hat **(data['theta_k'].reshape((1, data['k'])))
 
-    part_1 = data['X_k']/data['Y_k'].reshape((1, data['n'], data['k'])) * (P_k_goods_hat_temp * D_k_hat).reshape((data['n'],1,data['k']))
+    part_1 = data['lambda_2_k'] * (P_k_goods_hat_temp * D_k_hat).reshape((data['n'],1,data['k']))
 
     Y_k_hat = (C_k_hat_temp.reshape((1, data['n'], data['k']))*part_1).sum(axis=0).reshape(data['n'], data['k'])
 
@@ -99,7 +99,9 @@ def get_Y_g_hat(C_g_hat, P_g_goods_hat, D_g_hat, data):
     C_g_hat_temp = C_g_hat **(-data['theta_g'].reshape((1, data['g'])))
     P_g_goods_hat_temp = P_g_goods_hat **(data['theta_g'].reshape((1, data['g'])))
 
-    part_1 = data['X_g']/data['Y_g'].reshape((1, data['n'], data['g'])) * (P_g_goods_hat_temp * D_g_hat).reshape((data['n'],1,data['g']))
+    # Y_g_temp = np.array(data['Y_g'])
+    # Y_g_temp[np.where(Y_g_temp == 0)] = 1
+    part_1 = (data['lambda_2_g'])* (P_g_goods_hat_temp * D_g_hat).reshape((data['n'],1,data['g']))
 
     Y_g_hat = (C_g_hat_temp.reshape((1, data['n'], data['g']))*part_1).sum(axis=0).reshape(data['n'], data['g'])
 
