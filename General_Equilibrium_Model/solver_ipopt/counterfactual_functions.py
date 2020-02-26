@@ -1,6 +1,4 @@
 import autograd.numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
 from helper import *
 ## These functions have had a basic "check".
 def get_E_hat(w_hat, r_hat, data):
