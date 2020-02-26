@@ -24,16 +24,17 @@ def eval_jac_g(X, flag, user_data=None):
     @param flag: this asks for the sparsity structure
     """
     print('eval_jac_g')
-
+    print(X)
+    print(flag)
+    print(user_data)
+    print()
+    #XXX
     if flag:
-        temp = np.ones((X.shape[0], X.shape[0]))
-        rows, cols = np.nonzero(temp)
-        #rows = np.linspace(0, len(X) -1, len(X)).astype(int)
-        #cols = np.linspace(0, len(X) -1, len(X)).astype(int)
+        rows = np.array([], dtype=int)
+        cols = np.array([], dtype=int)
         return (rows, cols)
     else:
-
-        return jac_g(X)
+        return np.array([], dtype=float)
 
 root, data_dict, reg_2_num, comm_2_num = get_data_files()
 
@@ -45,29 +46,49 @@ data_dict['R_hat'] = np.ones((n, g))
 data_dict['R_hat'][reg_2_num['usa'], 15] = 2
 data_dict['R_hat'][reg_2_num['usa'], 16] = 2
 
-
 X_0 = np.ones(n*g + n)*1.0
 
-eval_g = lambda x: reduced_counterfactual(x, data_dict)
-eval_f = lambda x: np.sum(reduced_counterfactual(x, data_dict)**2) # Norm of residuals
+def eval_g(X, user_data=None):
+    """
+    Evaluate the constraint functions.
+    """
+    return np.array([], dtype=float)
 
+eeval_f = lambda x: np.sum(reduced_counterfactual(x, data_dict)**2) # Norm of residuals
 
 nvar = X_0.shape[0]
 x_L = np.zeros((nvar))
 x_U = np.ones((nvar)) * 10000.0
 
-ncon = nvar
+ncon = 0
 
-g_L = np.zeros((nvar))*1.0
-g_U = np.zeros((nvar))*1.0
+g_L = np.array([], dtype=float)
+g_U = np.array([], dtype=float)
 
 eval_grad_f = grad(eval_f)
-jac_g = jacobian(eval_g)
-def main():
-    nnzj = nvar*nvar
-    nnzh =  int((nvar*(nvar+1))/2)
 
-    nlp = pyipopt.create(nvar, x_L, x_U, ncon, g_L, g_U, nnzj, nnzh, eval_f, eval_grad_f, eval_g, eval_jac_g)
+def apply_new(x):
+    return True
+
+def main():
+    nnzj = 0
+    nnzh = int((nvar*(nvar+1))/2)
+
+    nlp = pyipopt.create(
+            nvar,
+            x_L,
+            x_U,
+            ncon,
+            g_L,
+            g_U,
+            nnzj,
+            nnzh,
+            eval_f,
+            eval_grad_f,
+            eval_g,
+            eval_jac_g)
+
+    nlp.num_option('tol', 1e-5)
 
     print("Going to call solve")
     print("x0 = {}".format(X_0))
