@@ -1,4 +1,4 @@
-prefix=/Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build
+prefix=/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include/coin/ThirdParty
@@ -8,5 +8,5 @@ Description: Harwell Subroutines Library
 URL: https://projects.coin-or.org/BuildTools
 Version: 1.4.5
 Cflags: -I${includedir}
-Libs: -L${libdir} -lcoinhsl -lblas   -L/usr/local/Cellar/gcc/9.2.0_3/lib/gcc/9/gcc/x86_64-apple-darwin18/9.2.0 -L/usr/local/Cellar/gcc/9.2.0_3/lib/gcc/9/gcc/x86_64-apple-darwin18/9.2.0/../../.. -lgfortran -lSystem -lquadmath -lm
+Libs: -L${libdir} -lcoinhsl -lblas   -L/pool001/ozaltun/ipopt_test/lib -L/home/software/gcc/6.2.0/lib64/../lib64 -L/home/software/gcc/6.2.0/lib/../lib64 -L/home/software/gcc/6.2.0/lib/gcc/x86_64-pc-linux-gnu/6.2.0 -L/home/software/gcc/6.2.0/lib/gcc/x86_64-pc-linux-gnu/6.2.0/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/home/software/gcc/6.2.0/lib64 -L/home/software/gcc/6.2.0/lib -L/home/software/gcc/6.2.0/lib/gcc/x86_64-pc-linux-gnu/6.2.0/../../.. -lgfortran -lm -lquadmath
 Requires: coinmetis 

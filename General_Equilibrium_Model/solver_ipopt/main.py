@@ -33,7 +33,7 @@ def eval_jac_g(X, flag, user_data=None):
         return (rows, cols)
     else:
 
-        return jacobian(eval_g)(X)
+        return jac_g(X)
 
 root, data_dict, reg_2_num, comm_2_num = get_data_files()
 
@@ -42,6 +42,10 @@ g = data_dict['g']
 k = data_dict['k']
 
 data_dict['R_hat'] = np.ones((n, g))
+data_dict['R_hat'][reg_2_num['usa'], 15] = 2
+data_dict['R_hat'][reg_2_num['usa'], 16] = 2
+
+
 X_0 = np.ones(n*g + n)*1.0
 
 eval_g = lambda x: reduced_counterfactual(x, data_dict)
@@ -57,7 +61,7 @@ g_L = np.zeros((nvar))*1.0
 g_U = np.zeros((nvar))*1.0
 
 eval_grad_f = grad(eval_f)
-
+jac_g = jacobian(eval_g)
 def main():
     nnzj = nvar*nvar
     nnzh =  int((nvar*(nvar+1))/2)

@@ -1,1 +1,1 @@
-/Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/Ipopt/examples/hs071_c/hs071_c.c
+/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/Ipopt/examples/hs071_c/hs071_c.c

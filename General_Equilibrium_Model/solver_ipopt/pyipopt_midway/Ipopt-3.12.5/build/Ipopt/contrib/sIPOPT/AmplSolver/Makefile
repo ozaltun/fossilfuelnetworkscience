@@ -7,7 +7,7 @@
 
 #############################################################################
 # Do not modify anything below unless you know what you're doing.
-prefix      = /Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build
+prefix      = /home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build
 exec_prefix = ${prefix}
 libdir      = ${exec_prefix}/lib
 bindir      = ${exec_prefix}/bin
@@ -16,19 +16,19 @@ SRCDIR      = ../../../../../Ipopt/contrib/sIPOPT/AmplSolver
 ipoptsrcdir  = $(SRCDIR)/../../../src
 senssrcdir = $(SRCDIR)/../src
 
-CXX         = clang++
-CXXFLAGS    = -O3 -pipe -DNDEBUG -Wparentheses -Wreturn-type -Wcast-qual -Wall -Wpointer-arith -Wwrite-strings -Wconversion -Wno-unknown-pragmas -Wno-long-long   -DIPOPT_BUILD
-LDFLAGS     = $(CXXFLAGS) 
+CXX         = /pool001/ozaltun/ipopt_test/bin/x86_64-conda_cos6-linux-gnu-c++
+CXXFLAGS    = -fvisibility-inlines-hidden -std=c++17 -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -pipe -isystem /pool001/ozaltun/ipopt_test/include   -DIPOPT_BUILD
+LDFLAGS     = $(CXXFLAGS)  -Wl,--rpath -Wl,/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib
 
 # Include directories (we use the CYGPATH_W variables to allow compilation with Windows compilers)
 #   we also need some Ipopt headers that are not installed, so we add $(ipoptsrcdir)/Algorithm and $(ipoptsrcdir)/LinAlg
-INCL = `PKG_CONFIG_PATH=/Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib64/pkgconfig:/Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib/pkgconfig:/Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/share/pkgconfig: pkg-config --cflags ipoptamplinterface` -I`$(CYGPATH_W) $(ipoptsrcdir)/Algorithm` -I`$(CYGPATH_W) $(ipoptsrcdir)/LinAlg` -I`$(CYGPATH_W) $(senssrcdir)` $(ADDINCFLAGS)
-#INCL = -I`$(CYGPATH_W) /Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/include/coin`   -I`$(CYGPATH_W) $(ipoptsrcdir)/Algorithm` -I`$(CYGPATH_W) $(ipoptsrcdir)/LinAlg` -I`$(CYGPATH_W) $(senssrcdir)` $(ADDINCFLAGS)
+INCL = `PKG_CONFIG_PATH=/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib64/pkgconfig:/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib/pkgconfig:/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/share/pkgconfig: pkg-config --cflags ipoptamplinterface` -I`$(CYGPATH_W) $(ipoptsrcdir)/Algorithm` -I`$(CYGPATH_W) $(ipoptsrcdir)/LinAlg` -I`$(CYGPATH_W) $(senssrcdir)` $(ADDINCFLAGS)
+#INCL = -I`$(CYGPATH_W) /home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/include/coin`   -I`$(CYGPATH_W) $(ipoptsrcdir)/Algorithm` -I`$(CYGPATH_W) $(ipoptsrcdir)/LinAlg` -I`$(CYGPATH_W) $(senssrcdir)` $(ADDINCFLAGS)
 
 # Linker flags
-LIBS = -lsipopt `PKG_CONFIG_PATH=/Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib64/pkgconfig:/Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib/pkgconfig:/Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/share/pkgconfig: pkg-config --libs ipoptamplinterface`
-##LIBS = -link -libpath:`$(CYGPATH_W) /Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib` libsipopt.lib libipoptamplinterface.lib libipopt.lib -framework Accelerate -framework Accelerate -lm  -ldl 
-#LIBS = -L/Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib -lsipopt -lipoptamplinterface -lipopt -framework Accelerate -framework Accelerate -lm  -ldl 
+LIBS = -lsipopt `PKG_CONFIG_PATH=/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib64/pkgconfig:/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib/pkgconfig:/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/share/pkgconfig: pkg-config --libs ipoptamplinterface`
+##LIBS = -link -libpath:`$(CYGPATH_W) /home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib` libsipopt.lib libipoptamplinterface.lib libipopt.lib -llapack -lblas -lm  -ldl 
+#LIBS = -L/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib -lsipopt -lipoptamplinterface -lipopt -llapack -lblas -lm  -ldl 
 
 #LIBTOOL = $(SHELL) $(top_builddir)/../libtool
 #CXXLD = $(CXX)

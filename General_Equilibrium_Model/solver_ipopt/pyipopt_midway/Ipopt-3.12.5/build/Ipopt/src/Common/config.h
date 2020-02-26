@@ -218,7 +218,7 @@
 #define PACKAGE_VERSION "3.12.5"
 
 /* Set to extension for shared libraries in quotes. */
-#define SHAREDLIBEXT "dylib"
+#define SHAREDLIBEXT "so"
 
 /* The size of a `int *', as computed by sizeof. */
 #define SIZEOF_INT_P 8

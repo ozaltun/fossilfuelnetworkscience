@@ -2,8 +2,6 @@
 # setup environment
 export IPOPT_DIR="`pwd`/Ipopt-3.12.5/build"
 
-module load python/3.6
-
 #Install IPOPT
 echo "installing IPOPT now"
 
@@ -36,12 +34,12 @@ echo " IPOPT is installed"
 
 cd pyipopt
 
-python3.6 setup.py build
+python setup.py build
 
-python3.6 setup.py install --user
+python setup.py install --user
 
 cd examples
 
-python3.6 hs071.py
+python hs071_PY3.py
 
 echo " PYIPOPT is tested and installed"

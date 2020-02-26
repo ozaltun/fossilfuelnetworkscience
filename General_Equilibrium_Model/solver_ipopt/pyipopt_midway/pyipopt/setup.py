@@ -13,8 +13,8 @@
 # so by the time you read this the bugs have probably been fixed
 # and you will want to specify a different directory here.
 #IPOPT_DIR = '/usr/local/'
-IPOPT_DIR = '../Ipopt-3.12.5/build'
-
+IPOPT_DIR = '/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/'
+#IPOPT_DIR = '/pool001/ozaltun/ipopt_test/'
 import os
 from distutils.core import setup
 from distutils.extension import Extension
@@ -39,7 +39,9 @@ if IPOPT_LIB is None:
 IPOPT_INC = os.path.join(IPOPT_DIR, 'include/coin/')
 
 FILES = ['src/callback.c', 'src/pyipoptcoremodule.c']
-
+print('hello!')
+print(IPOPT_INC, IPOPT_LIB)
+print('bye!')
 # The extra_link_args is commented out here;
 # that line was causing my pyipopt install to not work.
 # Also I am using coinmumps instead of coinhsl.
@@ -47,7 +49,9 @@ pyipopt_extension = Extension(
         'pyipoptcore',
         FILES,
         #extra_link_args=['-Wl,--rpath','-Wl,'+ IPOPT_LIB],
-        library_dirs=[IPOPT_LIB],
+        #extra_link_args = ['-L/pool001/ozaltun/ipopt_test/bin/'],
+	#extra_link_args = ['-L/pool001/ozaltun/ipopt_test/lib -Wl,-rpath=/pool001/ozaltun/ipopt_test/lib -Wl,--no-as-needed -Wl,--sysroot=/'],
+	library_dirs=[IPOPT_LIB],
         libraries=[
             'ipopt', 'coinblas',
             'coinhsl',  ###changed this one

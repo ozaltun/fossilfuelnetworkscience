@@ -30,22 +30,22 @@ ADDINCFLAGS =
 
 
 # C++ Compiler command
-CXX = clang++
+CXX = /pool001/ozaltun/ipopt_test/bin/x86_64-conda_cos6-linux-gnu-c++
 
 # C++ Compiler options
-CXXFLAGS = -O3 -pipe -DNDEBUG -Wparentheses -Wreturn-type -Wcast-qual -Wall -Wpointer-arith -Wwrite-strings -Wconversion -Wno-unknown-pragmas -Wno-long-long   -DIPOPT_BUILD
+CXXFLAGS = -fvisibility-inlines-hidden -std=c++17 -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -pipe -isystem /pool001/ozaltun/ipopt_test/include   -DIPOPT_BUILD
 
 # additional C++ Compiler options for linking
-CXXLINKFLAGS = 
+CXXLINKFLAGS =  -Wl,--rpath -Wl,/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib
 
 # Include directories (we use the CYGPATH_W variables to allow compilation with Windows compilers)
-INCL = `PKG_CONFIG_PATH=/Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib64/pkgconfig:/Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib/pkgconfig:/Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/share/pkgconfig: pkg-config --cflags ipopt` $(ADDINCFLAGS)
-#INCL = -I`$(CYGPATH_W) /Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/include/coin`  $(ADDINCFLAGS)
+INCL = `PKG_CONFIG_PATH=/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib64/pkgconfig:/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib/pkgconfig:/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/share/pkgconfig: pkg-config --cflags ipopt` $(ADDINCFLAGS)
+#INCL = -I`$(CYGPATH_W) /home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/include/coin`  $(ADDINCFLAGS)
 
 # Linker flags
-LIBS = `PKG_CONFIG_PATH=/Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib64/pkgconfig:/Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib/pkgconfig:/Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/share/pkgconfig: pkg-config --libs ipopt` -lc++
-##LIBS = -link -libpath:`$(CYGPATH_W) /Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib` libipopt.lib -framework Accelerate -framework Accelerate -lm  -ldl -lc++
-#LIBS = -L/Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib -lipopt -framework Accelerate -framework Accelerate -lm  -ldl -lc++
+LIBS = `PKG_CONFIG_PATH=/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib64/pkgconfig:/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib/pkgconfig:/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/share/pkgconfig: pkg-config --libs ipopt` -lstdc++ -lm
+##LIBS = -link -libpath:`$(CYGPATH_W) /home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib` libipopt.lib -llapack -lblas -lm  -ldl -lstdc++ -lm
+#LIBS = -L/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib -lipopt -llapack -lblas -lm  -ldl -lstdc++ -lm
 
 # The following is necessary under cygwin, if native compilers are used
 CYGPATH_W = echo

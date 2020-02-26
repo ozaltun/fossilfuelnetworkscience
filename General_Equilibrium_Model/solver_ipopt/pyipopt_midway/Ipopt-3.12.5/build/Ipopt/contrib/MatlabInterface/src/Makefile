@@ -29,21 +29,21 @@ MEX = $(MATLAB_HOME)/bin/mex
 #############################################################################
 # Do not modify anything below unless you know what you're doing.
 exec_prefix = ${prefix}
-prefix      = /Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build
+prefix      = /home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build
 libdir      = ${exec_prefix}/lib
 
-CXX         = clang++
-CXXFLAGS    = -O3 -pipe -DNDEBUG -Wparentheses -Wreturn-type -Wcast-qual -Wall -Wpointer-arith -Wwrite-strings -Wconversion -Wno-unknown-pragmas -Wno-long-long   -DIPOPT_BUILD -DMATLAB_MEXFILE # -DMWINDEXISINT
-LDFLAGS     = $(CXXFLAGS)   #-static-libgcc -static-libstdc++
+CXX         = /pool001/ozaltun/ipopt_test/bin/x86_64-conda_cos6-linux-gnu-c++
+CXXFLAGS    = -fvisibility-inlines-hidden -std=c++17 -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -pipe -isystem /pool001/ozaltun/ipopt_test/include   -DIPOPT_BUILD -DMATLAB_MEXFILE # -DMWINDEXISINT
+LDFLAGS     = $(CXXFLAGS)  -Wl,--rpath -Wl,/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib  #-static-libgcc -static-libstdc++
 
 # Include directories (we use the CYGPATH_W variables to allow compilation with Windows compilers)
-INCL = `PKG_CONFIG_PATH=/Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib64/pkgconfig:/Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib/pkgconfig:/Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/share/pkgconfig: pkg-config --cflags ipopt`
-#INCL = -I`$(CYGPATH_W) /Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/include/coin` 
+INCL = `PKG_CONFIG_PATH=/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib64/pkgconfig:/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib/pkgconfig:/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/share/pkgconfig: pkg-config --cflags ipopt`
+#INCL = -I`$(CYGPATH_W) /home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/include/coin` 
 
 # Linker flags
-LIBS = `PKG_CONFIG_PATH=/Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib64/pkgconfig:/Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib/pkgconfig:/Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/share/pkgconfig: pkg-config --libs ipopt | sed -e 's/-framework vecLib//g'`
-##LIBS = -link -libpath:`$(CYGPATH_W) /Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib` libipopt.lib -framework Accelerate -framework Accelerate -lm  -ldl
-#LIBS = -L/Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib -lipopt `echo -framework Accelerate -framework Accelerate -lm  -ldl | sed -e 's/-framework vecLib//g'`
+LIBS = `PKG_CONFIG_PATH=/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib64/pkgconfig:/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib/pkgconfig:/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/share/pkgconfig: pkg-config --libs ipopt | sed -e 's/-framework vecLib//g'`
+##LIBS = -link -libpath:`$(CYGPATH_W) /home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib` libipopt.lib -llapack -lblas -lm  -ldl
+#LIBS = -L/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/lib -lipopt `echo -llapack -lblas -lm  -ldl | sed -e 's/-framework vecLib//g'`
 LIBS_STATIC = $(LIBS)
 #LIBS_STATIC = $$(echo " $(LIBS) " | sed -e "s| -lgfortran | `gfortran -print-file-name=libgfortran.a` |g" -e "s| -lquadmath | `gfortran -print-file-name=libquadmath.a` |g")
 ##LIBS_STATIC = $$(echo " $(LIBS) " | sed -e 's| -Wl,-Bdynamic,-lmwma57,-Bstatic | -lmwma57 |g')
@@ -129,7 +129,7 @@ mexopts:
 	        -e "s| -L/mingw/lib | -L$$mingwlibdirwin |g"); \
 	      $(GM_ADD_LIBS_STATIC) \
 	      cp mexopts.bat mexopts.bat.orig; \
-	      sed -e 's|COMPILER=gcc|COMPILER=clang++|' -e 's|GM_MEXLANG=c$$|GM_MEXLANG=cxx|' \
+	      sed -e 's|COMPILER=gcc|COMPILER=/pool001/ozaltun/ipopt_test/bin/x86_64-conda_cos6-linux-gnu-c++|' -e 's|GM_MEXLANG=c$$|GM_MEXLANG=cxx|' \
 	        -e "s|GM_ADD_LIBS=-llibmx -llibmex -llibmat$$|GM_ADD_LIBS=$$GM_ADD_LIBS|" \
 	        mexopts.bat.orig > mexopts.bat; \
 	    fi \
@@ -145,7 +145,7 @@ mexopts:
 	        -e "s| -L/usr/lib/| -L$$cyglibdirwin/|g"); \
 	      $(GM_ADD_LIBS_STATIC) \
 	      cp mexopts.bat mexopts.bat.orig; \
-	      sed -e 's|COMPILER=gcc|COMPILER=clang++|' -e 's|GM_MEXLANG=c$$|GM_MEXLANG=cxx|' \
+	      sed -e 's|COMPILER=gcc|COMPILER=/pool001/ozaltun/ipopt_test/bin/x86_64-conda_cos6-linux-gnu-c++|' -e 's|GM_MEXLANG=c$$|GM_MEXLANG=cxx|' \
 	        -e "s|GM_ADD_LIBS=-llibmx -llibmex -llibmat$$|GM_ADD_LIBS=$$GM_ADD_LIBS|" \
 	        mexopts.bat.orig > mexopts.bat; \
 	    fi \

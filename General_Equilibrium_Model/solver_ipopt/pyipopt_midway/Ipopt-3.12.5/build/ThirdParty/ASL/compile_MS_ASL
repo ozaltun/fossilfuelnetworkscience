@@ -12,8 +12,8 @@ set -e
 # copying the sources.
 
 # set -x
-mkinstalldirs="/Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/ThirdParty/ASL/install-sh -d"
-abs_source_dir=/Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/ThirdParty/ASL
+mkinstalldirs="/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/ThirdParty/ASL/install-sh -d"
+abs_source_dir=/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/ThirdParty/ASL
 compdir=compdir
 
 rm -rf $compdir
@@ -53,7 +53,7 @@ sed -e 's/comptry\.bat \$(CC)/$(CC)/' makefile.vc > makefile.coin
 
 libampl=libamplsolver.a
 MAKEFLAGS=
-nmake -f makefile.coin -j 1 CFLAGS=" -O3 -pipe -DNDEBUG -DASL_BUILD  -fPIC -DPIC" CC="cc"
+nmake -f makefile.coin -j 1 CFLAGS=" -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -pipe -isystem /pool001/ozaltun/ipopt_test/include -DASL_BUILD  -fPIC -DPIC" CC="/pool001/ozaltun/ipopt_test/bin/x86_64-conda_cos6-linux-gnu-cc"
 mv amplsolv.lib ../$libampl
 mv stdio1.h arith.h funcadd0.obj ..
 cd ..

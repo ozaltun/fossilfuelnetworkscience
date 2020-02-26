@@ -12,8 +12,8 @@ set -e
 # copying the sources.
 
 # set -x
-mkinstalldirs="/Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/ThirdParty/ASL/install-sh -d"
-abs_source_dir=/Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/ThirdParty/ASL
+mkinstalldirs="/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/ThirdParty/ASL/install-sh -d"
+abs_source_dir=/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/ThirdParty/ASL
 compdir=compdir
 
 # Remove the old compilation directory, if present, and create a new one. Then
@@ -47,7 +47,7 @@ sed -e "/sysdetails_ASL/s/System_details/$sys_details/" details.c0 > details.c
 # flags. makefile.u hardwires `ar' and sets ARFLAGS = ruv. Since we trash the
 # entire build and start from scratch, the `u' in ruv stands for `useless'.
 
-sed -e 's/ ar / ar /g' \
+sed -e 's/ ar / /pool001/ozaltun/ipopt_test/bin/x86_64-conda_cos6-linux-gnu-ar /g' \
     -e 's/^ARFLAGS =/# ARFLAGS =/' < makefile.u > makefile.coin
 
 # If we're in a fake unix environment on a Windows box, the default compiler
@@ -69,9 +69,9 @@ fi
 # trailing spaces in the string we're matching, in case the 64-bit flag is the
 # only content in CFLAGS.
 
-case "i386-apple-darwin18.7.0" in
+case "x86_64-unknown-linux-gnu" in
   *86-*-solaris*)
-    case " -O3 -pipe -DNDEBUG    -DASL_BUILD " in
+    case " -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -pipe -isystem /pool001/ozaltun/ipopt_test/include   -DASL_BUILD " in
       *" "-m64" "* | *" "-xarch=*64*" "*)
 	sed -e 's/^amplsolver.a:/amplsolver.a: fpsetprec64.s/' \
 	  < makefile.coin > makefile.coin.tmp
@@ -91,7 +91,7 @@ esac
 # configure has already put the appropriate information into ASLMAKEFLAGS.
 
 libampl=libamplsolver.a
-make -f makefile.coin -j 1 CFLAGS=" -O3 -pipe -DNDEBUG -DASL_BUILD  -fPIC -DPIC" CC="cc"
+make -f makefile.coin -j 1 CFLAGS=" -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -pipe -isystem /pool001/ozaltun/ipopt_test/include -DASL_BUILD  -fPIC -DPIC" CC="/pool001/ozaltun/ipopt_test/bin/x86_64-conda_cos6-linux-gnu-cc"
 mv amplsolver.a ../$libampl
 mv stdio1.h arith.h funcadd0.o ..
 cd ..

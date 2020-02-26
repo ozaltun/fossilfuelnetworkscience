@@ -1,10 +1,10 @@
-prefix=/Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build
-libdir=/Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/Ipopt/src/Apps/AmplSolver
+prefix=/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build
+libdir=/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build/Ipopt/src/Apps/AmplSolver
 
 Name: IPOPT
 Description: Ampl Interface TNLP to Ipopt
 URL: https://projects.coin-or.org/Ipopt
 Version: 3.12.5
 Libs: ${libdir}/libipoptamplinterface.la 
-Cflags: -I/Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/Ipopt/src/Apps/AmplSolver
+Cflags: -I/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/Ipopt/src/Apps/AmplSolver
 Requires: ipopt coinasl 

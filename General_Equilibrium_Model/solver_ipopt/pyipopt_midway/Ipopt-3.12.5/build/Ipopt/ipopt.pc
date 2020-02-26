@@ -1,4 +1,4 @@
-prefix=/Users/boraozaltun/GitHub/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build
+prefix=/home/ozaltun/research/fossilfuelnetworkscience/General_Equilibrium_Model/solver_ipopt/pyipopt_midway/Ipopt-3.12.5/build
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include/coin
@@ -7,6 +7,6 @@ Name: IPOPT
 Description: Interior Point Optimizer
 URL: https://projects.coin-or.org/Ipopt
 Version: 3.12.5
-Libs: -L${libdir} -lipopt -framework Accelerate -framework Accelerate -lm  -ldl
+Libs: -L${libdir} -lipopt -llapack -lblas -lm  -ldl
 Cflags: -I${includedir}
 Requires: coinhsl >= 1.3 
