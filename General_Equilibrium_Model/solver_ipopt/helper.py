@@ -148,6 +148,21 @@ def get_values_from_X_reduced(X, data):
 
     return r_hat, w_hat
 
+def get_values_from_X_reduced_3(X, data):
+        n = data['n']
+        g = data['g']
+        k = data['k']
+
+        start = 0
+        r_hat =  X[start:(start+n*g)].reshape((n, g))
+        start += n*g
+        w_hat = X[start:(start+n)].reshape((n, 1))
+        start = start + n
+        C_k_hat = X[start:(start+n*k)].reshape((n, k))
+
+        return r_hat, w_hat, C_k_hat
+
+
 def get_Res_from_values_reduced(values, data):
     n = data['n']
     g = data['g']
