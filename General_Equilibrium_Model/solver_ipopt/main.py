@@ -11,7 +11,7 @@ def get_data_files():
     print('Need to input path to data!')
     root = input('Please input root path')
 
-    data_dict = load_obj(root+'/data_20200219.pickle')
+    data_dict = load_obj(root+'/data_subset_20200304.pickle')
     reg_2_num = load_obj(root+'/reg_2_num.pickle')
     comm_2_num = load_obj(root+'/comm_2_num.pickle')
 
@@ -48,12 +48,13 @@ data_dict['R_hat'][reg_2_num['usa'], 16] = 2
 
 X_0 = np.ones(n*g + n)*1.0
 
-eval_g = lambda x: reduced_counterfactual(x, data_dict)
-eval_f = lambda x: np.sum(reduced_counterfactual(x, data_dict)**2) # Norm of residuals
+eval_g = lambda x: reduced_counterfactual_overdetermined(x, data_dict)
+eval_f = lambda x: np.sum(eval_g(x)**2)
+
 
 
 nvar = X_0.shape[0]
-x_L = np.zeros((nvar))
+x_L = np.zeros((nvar)) *1e-14
 x_U = np.ones((nvar)) * 10000.0
 
 ncon = nvar
@@ -80,6 +81,11 @@ def main():
     print('obj:', obj)
     print('status:', status)
 
+    r_hat_star, w_hat_star = get_values_from_X_reduced(x, data_dict)
+    E_hat_star = get_E_hat(w_hat_star, r_hat_star, data_dict)
+    print('E_hat_star.sum()', E_hat_star.sum())
+
+    
     save_obj(x, root+'/x_output.pickle')
 
 main()
