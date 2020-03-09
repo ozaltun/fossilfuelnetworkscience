@@ -123,15 +123,14 @@ def get_X_from_values(values, data):
 
     # E_hat, P_k_hat, P_k_goods_hat, P_g_goods_hat, D_k_hat, D_g_hat, Y_k_hat, Y_g_hat, C_k_hat, C_g_hat, r_hat, w_hat = values
 
-    X = np.zeros(5*n*g + 4*n*k + 3*n)
-
+    # res = np.zeros(5*n*g + 4*n*k + 3*n)
+    res = []
     start = 0
     end = 0
     for i in values:
         temp = np.ravel(i)
-        end += temp.shape[0]
-        X[start:end] = temp
-        start = end
+        res.append(temp)
+    X = np.concatenate(res,axis=0)
 
     return X
 
@@ -158,9 +157,9 @@ def get_values_from_X_reduced_3(X, data):
         start += n*g
         w_hat = X[start:(start+n)].reshape((n, 1))
         start = start + n
-        C_k_hat = X[start:(start+n*k)].reshape((n, k))
+        E_hat = X[start:(start+n)].reshape((n, 1))
 
-        return r_hat, w_hat, C_k_hat
+        return r_hat, w_hat, E_hat
 
 
 def get_Res_from_values_reduced(values, data):
