@@ -328,12 +328,13 @@ def reduced_counterfactual_overdetermined(X, data):
 
     res_2 = w_hat - ((part1 + part2))
 
+    reference_index = 116
     # Constraining the relative wage!
     ## Option 1 which implicitely constraines overall GDP
     # res_3 = w_hat.sum() - n
     # res_4 = r_hat.sum().sum() - n*g
     ## Option 2
-    res_3 = w_hat - w_hat/w_hat[26,0] # Normalize compared to the US
+    res_3 = w_hat - w_hat/w_hat[reference_index,0] # Normalize compared to the US
     # res_4 = r_hat - r_hat/r_hat[26,0]
     # Create the final residual
     res = np.concatenate((res_1.ravel(), res_2.ravel(), res_3.ravel()), axis=0)#, res_4.ravel()), axis=0)
