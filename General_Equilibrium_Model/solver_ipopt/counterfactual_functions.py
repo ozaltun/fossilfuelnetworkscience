@@ -328,7 +328,7 @@ def reduced_counterfactual_overdetermined(X, data):
 
     res_2 = w_hat - ((part1 + part2))
 
-    reference_index = 116
+    reference_index = 26 # 116
     # Constraining the relative wage!
     ## Option 1 which implicitely constraines overall GDP
     # res_3 = w_hat.sum() - n
