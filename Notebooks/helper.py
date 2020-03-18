@@ -229,7 +229,7 @@ def plotting_power_compared2_expontial(gasDegree, oilDegree, coalDegree, totalDe
 
     #plt.subplot(1, 1, 1)
     fig, axes = plt.subplots(4, 2, figsize=(8,16))
-    fig.suptitle('Plots of loglikelihood ratio between power law and exponential distributions', fontsize=11)
+    #fig.suptitle('Plots of loglikelihood ratio between power law and exponential distributions', fontsize=11)
 
     for i, fuel in enumerate(['gas', 'oil', 'coal','total']):
         axes[i,0].scatter(year, dictionary[fuel][0])
@@ -249,14 +249,26 @@ def plotting_power_compared2_expontial(gasDegree, oilDegree, coalDegree, totalDe
     plt.show()
     plt.close()
 
-def inDoutDtotD(dataAll):
-    final = list()
-    for i in dataAll.keys():
-        data_in = np.array(dataAll[i]['InDegree'])
-        data_out = np.array(dataAll[i]['OutDegree'])
-        data = data_in+data_out
-        meanTot = np.mean(data)
-        final.append((i, meanTot))
+def inDoutDtotD(dataAll, v=1):
+
+    if v==1:
+        final = list()
+        for i in dataAll.keys():
+            data_in = np.array(dataAll[i]['InDegree'])
+            data_out = np.array(dataAll[i]['OutDegree'])
+            data = data_in+data_out
+            meanTot = np.mean(data)
+            final.append((i, meanTot))
+    if v==2:
+        final = {'year':[], 'in_mean':[], 'in_percentile':[], 'out_mean':[], 'out_percentile':[] }
+        for i in dataAll.keys():
+            data_in = np.array(dataAll[i]['InDegree'])
+            data_out = np.array(dataAll[i]['OutDegree'])
+            final['year'].append(i)
+            final['in_mean'].append(np.mean(data_in))
+            final['in_percentile'].append((np.percentile(data_in, 5), np.percentile(data_out, 95)))
+            final['out_mean'].append(np.mean(data_out))
+            final['out_percentile'].append((np.percentile(data_out, 5), np.percentile(data_out, 95)))
     return final
 
 def connectivity_plot(gasDegree, oilDegree, coalDegree, totalDegree):
